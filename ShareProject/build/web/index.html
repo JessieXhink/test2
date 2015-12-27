@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+
+<!-- ************************ IMPORTANT INFORMATION ************************************
+     This file and Quick Start project are provided as an example of how to configure a JET application.
+     It contains the Oracle JET framework and a default requireJS configuration file to show how JET can be setup
+     in a common application. This project template can be used in conjunction with demo code from the JET website 
+     to test JET component behavior and interactions.
+
+     Any CSS styling with the prefix "demo-" is for demonstration only and is not provided as part of the JET framework.
+
+     The Header and Footer sections are provided for demonstration only. They are not part of the JET framework. 
+     Best practice patterns are provided as part of the JET website under the Samples section.
+
+     Aria Landmark role attributes are added to the different sections of the application for accessibility compliance.
+     If you change the type of content for a specific section from what is defined, you should also change the 
+     role value for that section to represent the appropriate content type.
+     ***************************** IMPORTANT INFORMATION ************************************ -->
+
+<html lang="en-us" class='demo-sticky-footer-layout'>
+    <head>
+        <title>Oracle JET Quick Start - Basic</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!--        <link rel="icon" href="css/images/favicon.ico" type="image/x-icon" />-->
+
+        <!-- This is the main css file for the default Alta theme -->
+        <link rel="stylesheet" href="css/libs/oj/v1.1.1/alta/oj-alta-min.css" type="text/css"/>
+
+        <!-- These style classes are for demonstration purposes only. -->
+        <link rel="stylesheet" href="css/demo-alta-patterns-min.css"/>
+
+        <!-- This is where you would add any app specific styling -->
+        <link rel="stylesheet" href="css/override.css" type="text/css"/>
+
+
+        <!-- RequireJS bootstrap file -->
+        <script data-main="js/main" src="js/libs/require/require.js"></script>
+
+    </head>
+    <body class="demo-appheader-offcanvas-pushwrapper">
+
+        <div id="globalBody" style="display: none"> <!-- This div helps make sure the footer stays at the bottom of the page -->
+            <!-- off-canvas content -->
+            <div id="appDrawer" 
+                 class="oj-offcanvas-start oj-panel demo-appheader-offscreencontent" 
+                 style="height:100%;">
+                <div id='demoAppheaderOffCanvasInnerDiv' data-bind="ojModule: {name: 'header', viewName: 'demoAppHeaderOffCanvasTemplate'}"></div>
+            </div>
+
+            <!-- Header section which contains the Global Branding, Global Navigation, and Application Navigation code. Template is located in /templates/header.tmpl.html -->
+            <header id="headerWrapper" role="banner" data-bind="ojModule: { name: 'header'}"></header>
+            <!--             <header id="headerWrapper" role="banner">
+                            <div data-bind="component: {
+                                    name: 'df-oracle-branding-bar',
+                                    params: brandingbarParams
+                                }">
+                            </div>
+                        </header>-->
+            <!-- This is where your main page content will be loaded -->
+            <div id="mainContainer">
+                <div class="oj-row">
+                    <div class="oj-xl-3 oj-lg-3 oj-md-12 oj-col"> <!-- demo-coldrop-A -->
+                        <div role="navigation" class="demo-page-content-area">
+                            <!--  This section is usually used for Navigation. 
+                                  If its purpose is changed, the "role" attribute should be changed as well
+                                  to meet accessibility guidelines
+                            -->
+                            <div id="navigationContent" data-bind="ojModule: { viewName: 'navContent'}"></div>
+                        </div>
+                    </div>
+                    <div class="oj-xl-6 oj-lg-9 oj-md-12 oj-col"> <!-- demo-coldrop-B -->
+                        <div role="main" class="demo-page-content-area">
+
+                            <!-- Unlike the Navigation and Complementary sections, this ojModule binding is using "name" instead of "viewName". 
+                            This tells the binding to look for and load the JavaScript module of the same name, before loading the view template file -->
+                            <div id="mainContent" data-bind="ojModule: { name: setMainContent}"></div>
+                        </div>
+                    </div>
+                    <div class="oj-xl-3 oj-lg-12 oj-md-12 oj-col"> <!-- demo-coldrop-C -->
+                        <div role="complementary" class="demo-page-content-area">
+                            <div id="complementaryContent" data-bind="ojModule: { viewName: 'compContent'}"></div>
+                        </div>
+                    </div>
+                </div>
+                <div id="div1">
+                    <label for="dateTime" data-bind="text: 'DateTime Controller'">Default</label>
+                    <input id="dateTime" data-bind="ojComponent: {component: 'ojInputDateTime', 
+                                                value: ojDatePickerValue}, attr:{alt:'alt_wjx'}"/>
+                    <br/><br/>
+                    <span class="oj-label">Current component value is:</span>
+                    <span data-bind="text: ojDatePickerValue"></span>
+                </div>
+
+            </div>
+            <div id="messageDialogWrapper">
+                <div id="messageDialog" 
+                     data-bind="ojComponent:
+                                    {   component: 'ojDialog', 
+                                        initialVisibility: 'show', 
+                                        modality: 'modeless',
+                                        rootAttributes: { 'style': 'width: 450px; min-height: 100px;'}
+                                    }">
+                    <div id="dtitlel" class="oj-dialog-header oj-helper-clearfix" aria-labelledby="msgDialogTitleId">
+                        <img class="oj-dialog-title" data-bind="attr:{src: titleIcon}"/>
+                        <span id="msgDialogTitleId" class="oj-dialog-title" data-bind="text: 'titleText'"></span>
+
+                    </div>
+                    <div id="dtextl" class="oj-dialog-body">
+                        <ul>
+                            <!-- ko foreach: detailErrTextArr -->
+                            <li data-bind="text: detailText + ':  ' +'type'"></li>
+                            <!-- /ko -->
+                        </ul>
+                    </div>
+                    <div class="oj-dialog-footer">
+                        <button id="msgOkButton" data-bind="ojComponent: {component: 'ojButton', label: 'UI_STR_OK'}"> </button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="ifTest">
+                <div id="not-subscribed-to-la"   data-bind="if: (subscribedToAppLA)">
+                    <div style="padding: 32px;">
+                        <span role="img" class="fa-icon-font logan-alert-fa" title='Not Subscribed to Log Analytics'></span>
+                        <span style="padding-left:5px">You are not subscribed to .....</span>
+                    </div>
+                </div>
+            </div>
+
+            <div id = "allTest">
+                <ul>
+                    <li data-bind="click:clickTest">click Me</li>
+                    <li data-bind="click:clickTest">Click Me</li>
+                    <li data-bind="click:clickTest">Click Me</li>
+                </ul>
+            </div>
+
+            <div id="root">
+                <div class="oj-row">
+                    <div class="oj-lg-2 oj-md-3 oj-sm-only-hide oj-col">    
+
+                        <div class="refined">Refined by</div>
+
+                        <label id="price_filter_lbl">Price</label>
+                        <div id="price_filter" aria-labelledby="price_filter_lbl"
+                             data-bind="ojComponent: {
+          component: 'ojCheckboxset', 
+          value: currentPrice, rootAttributes: {style: 'padding-bottom: 15px'}}" >
+                            <span class="oj-choice-row">
+                                <input id="price_opt1" type="checkbox" value="lt30">
+                                <label for="blueopt">Less than $30</label>
+                            </span>
+                            <span class="oj-choice-row">
+                                <input id="price_opt2" type="checkbox" value="30to40">
+                                <label for="price_opt2">$30 - $39.99</label>
+                            </span>
+                            <span class="oj-choice-row">
+                                <input id="price_opt3" type="checkbox" value="40to50">
+                                <label for="price_opt3">$40 - $49.99</label>
+                            </span>
+                            <span class="oj-choice-row">
+                                <input id="price_opt4" type="checkbox" value="gt50">
+                                <label for="price_opt4">Greater than $50</label>
+                            </span>
+                        </div>
+
+                        <label id="author_filter_lbl">Author</label>
+                        <div id="author_filter" aria-labelledby="author_filter_lbl"
+                             data-bind="ojComponent: {
+          component: 'ojCheckboxset', 
+          value: currentAuthor, rootAttributes: {style: 'padding-bottom: 15px'}}" >
+                            <span class="oj-choice-row">
+                                <input id="dcoward" type="checkbox" value="dcoward">
+                                <label for="dcoward">Danny Coward</label>
+                            </span>
+                            <span class="oj-choice-row">
+                                <input id="hschildt" type="checkbox" value="hschildt">
+                                <label for="hschildt">Herbert Schildt</label>
+                            </span>
+                            <span class="oj-choice-row">
+                                <input id="jmanico" type="checkbox" value="jmanico">
+                                <label for="jmanico">Jim Manico</label>
+                            </span>
+                            <span class="oj-choice-row">
+                                <input id="jbrock" type="checkbox" value="jbrock">
+                                <label for="jbrock">John Brock</label>
+                            </span>
+                            <span class="oj-choice-row">
+                                <input id="mnaftalin" type="checkbox" value="mnaftalin">
+                                <label for="mnaftalin">Maurice Naftalin</label>
+                            </span>
+                        </div>
+
+                        <label id="rating_filter_lbl">Customer Reviews</label>
+                        <div id="rating_filter" aria-labelledby="rating_filter_lbl"
+                             data-bind="ojComponent: {
+          component: 'ojCheckboxset', 
+          value: currentRating, rootAttributes: {style: 'padding-bottom: 15px'}}" >
+                            <span class="oj-choice-row">
+                                <input id="fivestars" type="checkbox" value="five">
+                                <label for="fivestars">5 Stars</label>
+                            </span>
+                            <span class="oj-choice-row">
+                                <input id="fourstars" type="checkbox" value="four">
+                                <label for="fourstars">4 or More Stars</label>
+                            </span>
+                            <span class="oj-choice-row">
+                                <input id="threestars" type="checkbox" value="three">
+                                <label for="threestars">3 or More Stars</label>
+                            </span>
+                            <span class="oj-choice-row">
+                                <input id="twostars" type="checkbox" value="two">
+                                <label for="twostars">Less than 3 Stars</label>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="oj-lg-10 oj-md-9 oj-sm-12 oj-col">    
+
+                        <div class="oj-row">
+                            <div class="oj-lg-6 oj-md-6 oj-sm-12 oj-col">
+
+                                <label for="sortBy" class="oj-label-inline">Sort by:</label>
+                                <select id="sortBy" data-bind="ojComponent: {component: 'ojSelect', value: currentSort, rootAttributes: {style:'max-width:11em'}}">
+                                    <option value="default">New and Popular</option>
+                                    <option value="lh">Price: Low to High</option>
+                                    <option value="hl">Price: High to Low</option>
+                                    <option value="reviews">Most Reviews</option>
+                                    <option value="date">Publication Date</option>
+                                </select>
+
+                            </div>
+                            <div class="oj-lg-6 oj-md-6 oj-sm-12 oj-col">
+                                <div id="paging" data-bind="ojComponent: {component: 'ojPagingControl', data: dataSource, pageSize: 3}">
+                                </div>
+                            </div>
+                            <ul id="listview3" 
+                                data-bind="ojComponent: {component: 'ojListView', data: dataSource, item: {template: 'product_template'}, selectionMode: 'single', rootAttributes: {style: 'width:100%'} }">
+                            </ul>
+
+                        </div>
+                    </div>
+
+                    <script type="text/html" id="product_template">
+                        <li data-bind="attr: {id: ID}">
+                            <div class="oj-row">
+                                <div class="oj-lg-3 oj-md-3 oj-sm-4 oj-col" style="max-width:150px;padding-left:0">
+                                    <div data-bind="style: { backgroundImage: 'url('+ IMAGE_URL +')', 
+                     backgroundRepeat: 'no-repeat', backgroundSize: '100%', backgroundPosition: 'center', 
+                     height: '172px', width: '100%' }"></div>
+                                </div>
+                                <div class="oj-lg-6 oj-md-6 oj-sm-8 oj-col">
+                                    <div class="oj-row">
+                                        <div><h4><a href="#" data-bind="text: TITLE"></a></h4></div>
+                                    </div>
+                                    <div class="oj-row">
+                                        <div><span>By <a href="#" data-bind="text: AUTHOR"></a></span></div>
+                                    </div>
+                                    <div class="oj-row">
+                                        <div class="oj-lg-12 oj-md-12 oj-sm-only-hide oj-col" style="padding:0">
+                                            <div class="sku-model">
+                                                <ul>
+                                                    <li><span class="label">SKU:</span> <span data-bind="text: ID"></span></li>
+                                                    <li><span class="label">Release Date:</span> <span data-bind="text: PUBLISH_DATE"></span></li>
+                                                    <li><span class="label">Format:</span> <span>Paperback</span></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="oj-row">
+                                        <div class="oj-lg-12 oj-md-12 oj-sm-12 oj-col" style="padding:0">
+                                            <div style="width:100%">
+                                                <div data-bind="ojComponent: {
+                             component: 'ojRatingGauge', 
+                             value: RATING,
+                             rootAttributes:{id:'gauge' + $itemContext.index}}" 
+                                                     style="width:86px;height:20px;display:inline-block;vertical-align:text-bottom">
+                                                </div>
+                                                <span data-bind="text: RATING"></span>
+                                                <span>(<a href="#" class="tab-link" data-bind="text: REVIEWS + ' Reviews'"></a>)</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="oj-row">
+                                        <div class="oj-lg-12 oj-md-12 oj-sm-only-hide oj-col" style="padding:10px 0">
+                                            <a class="sku-model" href="#">Check Shipping &amp; Availability</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="oj-lg-3 oj-md-3 oj-sm-8 oj-col">
+                                    <div class="oj-row">
+                                        <div class="price-block">
+                                            <div class="priceblock priceblock-medium">
+                                                <div class="medium-item-price"><span class="denominator" data-bind="text: $parent.currencyConverter.format(PRICE)"></span></div>
+                                            </div>
+                                        </div>
+                                        <div style="padding: 5px 0">
+                                            <button id="button" + $itemContext.index data-bind="ojComponent: { component: 'ojButton', label: 'Add to cart'}">
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="oj-row">
+                                        <div class="oj-lg-12 oj-md-12 oj-sm-only-hide oj-col" style="padding:0">
+                                            <div class="offers">
+                                                <ul>
+                                                    <li><a href="#">Free Shipping on Orders $35 and Up</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        </script>
+
+                    </div>
+                </div>
+
+                <div id="newfeature">
+                    <input id="parserSelected" type="text" placeholder="click button to choose parser"/>
+                    <button id="btnParserSelect" data-bind="ojComponent: {component: 'ojButton', label: 'choose parser'}, click:triggerParserChoosePopup"></button>
+                </div>
+                <div id="dialogDiv">
+                    <div style="display:none;width:1000px" class="dialogCss" id="modalDialog1" title="Dialog - no Close Icon" data-bind="ojComponent:{component: 'ojDialog', initialVisibility: 'hide',
+        rootAttributes: { style: 'width: 520px; min-width: 100px; max-width 1000px;'}}">
+                        <div class="oj-dialog-body">
+                            <!--Once can eliminate the header close icon by setting cancelBehavior to 'none' or 'escape'.-->
+                            <!--            <div>
+                                        TODO:add table to show ....TODO:add table to show ....TODO:add table to show ....TODO:add table to show ....
+                                        </div>-->
+                            <table id="table" summary="Department List" aria-label="Departments Table" 
+                                   data-bind="ojComponent: {component: 'ojTable', 
+                                    data: datasource, 
+                                    columnsDefault: {sortable: 'none'}, 
+                                    columns: [{headerText: 'Department Id', 
+                                           field: 'DepartmentId'},
+                                          {headerText: 'Department Name', 
+                                           field: 'DepartmentName'},
+                                          {headerText: 'Location Id', 
+                                           field: 'LocationId'},
+                                          {headerText: 'Manager Id', 
+                                           field: 'ManagerId'}]}">
+                            </table>
+                        </div>
+                        <div class="oj-dialog-footer">
+                            <button id="okButton" data-bind="ojComponent: {component: 'ojButton', label: 'OK'}"> </button>
+                        </div>
+                    </div> 
+                </div>
+
+
+                <div id="testForEach">
+                    <ul>
+                        <!-- ko foreach: nameList -->
+                        <li>
+                            <a data-bind="text:name, click:$parent.testClick">click me</a>
+                        </li>
+                        <!-- /ko -->
+                    </ul>
+                </div>
+
+
+                <div id="uploadFileArea">
+                                                                    <input id="selectedFile" type="file" name="files" />
+                                                                    <input id="sumitUploadFile" type="button" data-bind="ojComponent: {component: 'ojButton', label: 'upload'}, click:uploadFile"/>    </div>
+
+
+
+            </div>
+        </body>
+    </html>
